@@ -1,22 +1,21 @@
-%Unscented Kalman Filter for orientation estimation using quaternions
+% Unscented Kalman Filter for orientation estimation using quaternions
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %first 4 components of x is quaternion, last 3 is angular velocities
 
 %first 3 components of z is accelerometer, next 3 gyroscopes, last 3 magnetometer
 
 %order is always x, y, z
 
-%(just notes for me)
 %check if quaternion multiplication convention consistent, Eq. 12
-%check if "small rotations" are small
-%is there/should there be symmetry breaking? 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function [xpost, Ppost] = ukf(x,P,z,dT)
 %process noise (fill these two in later)
 Q=0.01*eye(6);
 
 %measurement noise
-R=0.1*eye(9);
+R=0.5*eye(9); %increasing this seems to smooth out the motion; understand why
 
 S = chol(P + Q);
 
@@ -25,7 +24,7 @@ for i=1:6
 	W(i,:) = sqrt(12)*S(:,i);
 	W(i+6,:) = -W(i,:);
 end
-%W(13,:)=zeros(1,6);
+
 x=x(:);
 x=x.';
 X = addmean(W,x);
@@ -92,19 +91,16 @@ else
 end
 wnew = x(5:end);
 
-%q{k+1}=q{k}+dq/dt*t
-%dq/dt = w*q{k}/2;
-
 xnew = [qnew(:);wnew(:)]; 
 end
 
 function [z] = state2meas(x)
 %maps state into expected measurement
 %global gravity field
-g = [0,0,-1];%?? [3,3,3];% why 3,3,3 ??
+g = [0,0,-1];
 
 %global B field (initialize properly)
-b = [0,0,0]; % why 1,1,1
+b = [0,0,0]; 
 
 q = x(1:4);
 

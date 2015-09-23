@@ -9,7 +9,7 @@ ax = p3.Axes3D(fig)
 
 #R is 3 x 3 x numT array
 #columns of R are the positions of the basis vectors
-R=loadmat('R.mat')
+R=loadmat('Data/R.mat')
 R=R['R']
 
 lines = [ax.plot([0,0],[0,0],[0,1.],lw=3)[0],

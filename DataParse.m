@@ -1,5 +1,5 @@
 clear all;
-f=fopen('Data_9_16_10_09_PM.txt');
+f=fopen('Data/Data_9_16_10_09_PM.txt');
 
 %%
 %fgetl(f);%for Roll, pitch and yaw file. Not for General
