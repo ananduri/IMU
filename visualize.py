@@ -35,3 +35,6 @@ ani = animation.FuncAnimation(fig,update_lines,
 	fargs=(R,lines),interval=50,blit=False)
 
 plt.show()
+
+
+
