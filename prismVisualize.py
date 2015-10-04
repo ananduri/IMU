@@ -8,7 +8,9 @@ from Quaternion import Quaternion
 fig = plt.figure()
 ax = fig.add_subplot(111,xlim=(-2.5,2.5),ylim=(-2.5,2.5),aspect='equal')
 
-d = loadmat('Data/quat2.mat')
+time_text = ax.text(0.02,0.95,'',transform=ax.transAxes)
+
+d = loadmat('Data/quat_test.mat')
 quat = d['quat']
 
 # we want three kinds of faces
@@ -51,11 +53,12 @@ patchs = tuple(polys)
 def init():
 	for i in range(6):
 		ax.add_patch(polys[i])
-	return patchs,
+	time_text.set_text('')
+	return patchs,time_text
 
 # TODO: add constant rotation for viewing from different camera angle
-def animate(i):
-	q = quat[:,i]
+def animate(j):
+	q = quat[:,j]
 
 	angle = 2*np.arccos(q[0])
 
@@ -91,7 +94,9 @@ def animate(i):
 		polys[i+4].set_xy(faces_proj_z[i])
 		polys[i+4].set_zorder(zorder_z[i])
 
-	return tuple(polys)
+	time_text.set_text('frame = %.1f' % j)
+
+	return tuple(polys),time_text
 
 #want blit=True
 anim = animation.FuncAnimation(fig, animate, init_func=init,frames=1400, interval=40, blit=False) 
